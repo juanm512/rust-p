@@ -45,20 +45,48 @@ impl Producto{
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-// pub fn run(){
-//     let id = String::from("");    
-//     let nombre = String::from("");    
-//     let precio: f32= 15.5;
+    #[test]
+    fn test_calculacion_impuestos() {
+        let producto = Producto {
+            id: String::from("ID123"),
+            nombre: String::from("Producto A"),
+            precio_bruto: 100.0,
+        };
 
-//     let p = Producto::new(id, nombre, precio);
+        let impuestos = producto.calcular_impuestos(20.0); // Asumiendo un 20% de impuesto
+        assert!((impuestos - 20.0).abs() < f32::EPSILON, "El cálculo del impuesto no es correcto");
+    }
 
-//     println!("{:#?}", p);
-//     println!("{:#?}", p.calcular_impuestos(10.0) );
-//     println!("{:#?}", p.aplicar_descuento(20.0) );
-//     println!("{:#?}", p.calcular_precio_total( Some(10.0), Some(30.0) ) );
-//     println!("{:#?}", p.calcular_precio_total( Some(10.0), None ) );
-// }
+    #[test]
+    fn test_aplicacion_descuento() {
+        let producto = Producto {
+            id: String::from("ID124"),
+            nombre: String::from("Producto B"),
+            precio_bruto: 80.0,
+        };
 
+        let descuento = producto.aplicar_descuento(30.0); // Asumiendo un 30% de descuento
+        assert!((24.0 - descuento).abs() < f32::EPSILON, "El cálculo del descuento no es correcto");
+    }
 
-// HACER TESTS
+    #[test]
+    fn test_calcular_precio_total_con_impuesto_y_descuento() {
+        let producto = Producto {
+            id: String::from("ID125"),
+            nombre: String::from("Producto C"),
+            precio_bruto: 60.0,
+        };
+
+        // Prueba con ambos parámetros pasados
+        let precio_total = producto.calcular_precio_total(Some(10.0), Some(25.0));
+        assert!((precio_total - 51.0).abs() < f32::EPSILON, "El cálculo del precio total no es correcto con impuestos y descuento");
+
+        // Prueba sin parámetros (asumiendo un 10% de impuesto y no aplicar descuento)
+        let precio_total_sin_parámetros = producto.calcular_precio_total(Some(10.0), None);
+        assert!((60.0 + (60.0 * 10.0 / 100.0)) - precio_total_sin_parámetros.abs() < f32::EPSILON, "El cálculo del precio total no es correcto sin parámetros");
+    }
+}
