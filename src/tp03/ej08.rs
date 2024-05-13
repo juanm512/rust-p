@@ -71,10 +71,10 @@ struct Playlist {
 }
 
 impl Playlist {
-    fn get_pos(&mut self, cancion: Cancion) -> usize {
+    fn get_pos(&mut self, cancion: &Cancion) -> usize {
         let mut pos = usize::MAX;
         for i in 0..self.canciones.len() {
-            if self.canciones[i].equals(&cancion) {
+            if self.canciones[i].equals(cancion) {
                 pos = i;
                 break;
             }
@@ -86,14 +86,14 @@ impl Playlist {
         self.canciones.push(cancion);
     }
 
-    pub fn eliminar_cancion(&mut self, cancion: Cancion) {
+    pub fn eliminar_cancion(&mut self, cancion: &Cancion) {
         let pos = self.get_pos(cancion);
         if pos != usize::MAX {
             self.canciones.remove(pos);
         }
     }
 
-    pub fn mover_cancion(&mut self, cancion: Cancion, to_index: usize) {
+    pub fn mover_cancion(&mut self, cancion: &Cancion, to_index: usize) {
         let posicion_actual = self.get_pos(cancion);
         if to_index < self.canciones.len() {
             if posicion_actual != usize::MAX {
@@ -162,14 +162,13 @@ mod tests {
             artista: String::from("Artista 1"),
             genero: Genero::ROCK,
         };
-        let cancion_copia = cancion.clone();
 
         // Agregar canción
-        playlist.agregar_cancion(cancion);
+        playlist.agregar_cancion(cancion.clone());
         assert_eq!(playlist.canciones.len(), 1);
 
         // Eliminar canción
-        playlist.eliminar_cancion(cancion_copia);
+        playlist.eliminar_cancion(&cancion);
         assert_eq!(playlist.canciones.len(), 0);
     }
 
@@ -193,7 +192,7 @@ mod tests {
 
         // Mover canción
         let cancion = playlist.canciones[0].clone();
-        playlist.mover_cancion(cancion, 1);
+        playlist.mover_cancion(&cancion, 1);
         assert_eq!(playlist.canciones[1].titulo, "Cancion 1");
     }
 
@@ -242,6 +241,27 @@ mod tests {
         assert_eq!(canciones.len(), 1);
         assert_eq!(canciones[0].titulo, "Cancion 1");
     }
+    #[test]
+    fn test_obtener_canciones_por_genero_0_canciones() {
+        let playlist = Playlist {
+            nombre: String::from("Mi Playlist"),
+            canciones: vec![
+                Cancion {
+                    titulo: String::from("Cancion 1"),
+                    artista: String::from("Artista 1"),
+                    genero: Genero::RAP,
+                },
+                Cancion {
+                    titulo: String::from("Cancion 2"),
+                    artista: String::from("Artista 2"),
+                    genero: Genero::POP,
+                },
+            ],
+        };
+
+        let canciones = playlist.obtener_canciones_por_genero(Genero::ROCK);
+        assert_eq!(canciones.len(), 0);
+    }
 
     #[test]
     fn test_obtener_canciones_por_artista() {
@@ -264,6 +284,28 @@ mod tests {
         let canciones = playlist.obtener_canciones_por_artista("Artista 1");
         assert_eq!(canciones.len(), 1);
         assert_eq!(canciones[0].titulo, "Cancion 1");
+    }
+
+    #[test]
+    fn test_obtener_canciones_por_artista_0_canciones() {
+        let playlist = Playlist {
+            nombre: String::from("Mi Playlist"),
+            canciones: vec![
+                Cancion {
+                    titulo: String::from("Cancion 1"),
+                    artista: String::from("Artista 1"),
+                    genero: Genero::ROCK,
+                },
+                Cancion {
+                    titulo: String::from("Cancion 2"),
+                    artista: String::from("Artista 2"),
+                    genero: Genero::POP,
+                },
+            ],
+        };
+
+        let canciones = playlist.obtener_canciones_por_artista("Artista 5");
+        assert_eq!(canciones.len(), 0);
     }
 
     #[test]

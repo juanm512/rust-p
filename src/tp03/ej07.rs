@@ -30,8 +30,8 @@ enum Color {
     NEGRO,
 }
 
-impl PartialEq for Color {
-    fn eq(&self, other: &Self) -> bool {
+impl Color {
+    pub fn equals(&self, other: &Self) -> bool {
         match (self, other) {
             (Color::ROJO, Color::ROJO)
             | (Color::VERDE, Color::VERDE)
@@ -40,6 +40,16 @@ impl PartialEq for Color {
             | (Color::BLANCO, Color::BLANCO)
             | (Color::NEGRO, Color::NEGRO) => true,
             _ => false,
+        }
+    }
+    pub fn clone(&self) -> Color {
+        match self {
+            Color::ROJO => Color::ROJO,
+            Color::VERDE => Color::VERDE,
+            Color::AZUL => Color::AZUL,
+            Color::AMARILLO => Color::AMARILLO,
+            Color::BLANCO => Color::BLANCO,
+            Color::NEGRO => Color::NEGRO,
         }
     }
 }
@@ -53,16 +63,6 @@ struct Auto {
     color: Color,
 }
 
-impl PartialEq for Auto {
-    fn eq(&self, other: &Self) -> bool {
-        self.marca == other.marca
-            && self.modelo == other.modelo
-            && self.año == other.año
-            && self.precio_bruto == other.precio_bruto
-            && self.color == other.color
-    }
-}
-
 impl Auto {
     pub fn new(marca: String, modelo: String, año: i32, precio_bruto: f32, color: Color) -> Auto {
         Auto {
@@ -71,6 +71,22 @@ impl Auto {
             año,
             precio_bruto,
             color,
+        }
+    }
+    pub fn equals(&self, other: &Self) -> bool {
+        self.marca == other.marca
+            && self.modelo == other.modelo
+            && self.año == other.año
+            && self.precio_bruto == other.precio_bruto
+            && self.color.equals(&other.color)
+    }
+    pub fn clone(&self) -> Auto {
+        Auto {
+            marca: self.marca.clone(),
+            modelo: self.modelo.clone(),
+            año: self.año,
+            precio_bruto: self.precio_bruto,
+            color: self.color.clone(),
         }
     }
 
@@ -122,15 +138,17 @@ impl ConcesionarioAuto {
 
     pub fn eliminar_auto(&mut self, auto_buscado: &Auto) {
         for i in 0..self.autos.len() {
-            if self.autos.get(i) != None && self.autos.get(i) == Some(auto_buscado) {
-                self.autos.remove(i);
+            if let Some(auto) = self.autos.get(i) {
+                if auto.equals(auto_buscado) {
+                    self.autos.remove(i);
+                }
             }
         }
     }
 
     pub fn buscar_auto(&self, auto_buscado: &Auto) -> Option<&Auto> {
         for auto in &self.autos {
-            if auto == auto_buscado {
+            if auto.equals(auto_buscado) {
                 return Some(auto);
             }
         }
@@ -201,7 +219,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_auto_eq_same() {
+    fn test_auto_equals_success() {
         let auto1 = Auto::new(
             String::from("Toyota"),
             String::from("Corolla"),
@@ -217,11 +235,11 @@ mod tests {
             Color::AZUL,
         );
 
-        assert_eq!(auto1.eq(&auto2), true);
+        assert_eq!(auto1.equals(&auto2), true);
     }
 
     #[test]
-    fn test_auto_eq_different() {
+    fn test_auto_equals_fail() {
         let auto1 = Auto::new(
             String::from("Toyota"),
             String::from("Corolla"),
@@ -237,7 +255,7 @@ mod tests {
             Color::NEGRO,
         );
 
-        assert_eq!(auto1.eq(&auto2), false);
+        assert_eq!(auto1.equals(&auto2), false);
     }
 
     #[test]
@@ -298,34 +316,19 @@ mod tests {
             Color::NEGRO,
         );
 
-        concesionario.agregar_auto(auto1);
+        concesionario.agregar_auto(auto1.clone());
         concesionario.agregar_auto(auto2);
 
         assert_eq!(concesionario.autos.len(), 2);
 
-        concesionario.eliminar_auto(&Auto::new(
-            String::from("Toyota"),
-            String::from("Corolla"),
-            2018,
-            20000.0,
-            Color::AZUL,
-        ));
+        concesionario.eliminar_auto(&auto1);
 
         assert_eq!(concesionario.autos.len(), 1);
-        assert_eq!(
-            concesionario.autos.contains(&Auto::new(
-                String::from("Toyota"),
-                String::from("Corolla"),
-                2018,
-                20000.0,
-                Color::AZUL,
-            )),
-            false
-        );
+        assert_eq!(concesionario.autos[0].equals(&auto1), false);
     }
 
     #[test]
-    fn test_concesionario_buscar_auto() {
+    fn test_concesionario_buscar_auto_success() {
         let mut concesionario = ConcesionarioAuto::new(
             String::from("Concesionario XYZ"),
             String::from("Calle Principal"),
@@ -347,26 +350,12 @@ mod tests {
             Color::NEGRO,
         );
 
-        concesionario.agregar_auto(auto1);
+        concesionario.agregar_auto(auto1.clone());
         concesionario.agregar_auto(auto2);
 
-        assert_eq!(
-            concesionario.buscar_auto(&Auto::new(
-                String::from("Toyota"),
-                String::from("Corolla"),
-                2018,
-                20000.0,
-                Color::AZUL,
-            )),
-            Some(&Auto::new(
-                String::from("Toyota"),
-                String::from("Corolla"),
-                2018,
-                20000.0,
-                Color::AZUL,
-            ))
-        );
-
+        if let Some(auto_encontrado) = concesionario.buscar_auto(&auto1) {
+            assert!(auto_encontrado.equals(&auto1));
+        }
         let auto3 = Auto::new(
             String::from("Ford"),
             String::from("Fiesta"),
@@ -374,6 +363,7 @@ mod tests {
             10000.0,
             Color::BLANCO,
         );
-        assert_eq!(concesionario.buscar_auto(&auto3), None);
+        let auto_encontrado = concesionario.buscar_auto(&auto3);
+        assert!(auto_encontrado.is_none());
     }
 }

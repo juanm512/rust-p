@@ -71,7 +71,7 @@ impl Fecha {
     }
     pub fn restar_dias(&mut self, mut dias: u32) {
         while dias > 0 {
-            if (self.dia - dias) < 1 {
+            if (self.dia as i32 - dias as i32) < 1 {
                 if self.mes == 1 {
                     self.mes = 12;
                     self.anio -= 1;
