@@ -11,13 +11,13 @@
 
 #[derive(Debug)]
 pub(crate) struct Fecha {
-    dia: i16,
-    mes: i16,
-    anio: i16,
+    dia: u32,
+    mes: u32,
+    anio: u32,
 }
 
 impl Fecha {
-    pub fn new(dia: i16, mes: i16, anio: i16) -> Fecha {
+    pub fn new(dia: u32, mes: u32, anio: u32) -> Fecha {
         Fecha { dia, mes, anio }
     }
     pub fn equals(&self, other: &Self) -> bool {
@@ -27,7 +27,7 @@ impl Fecha {
         Self::new(self.dia.clone(), self.mes.clone(), self.anio.clone())
     }
 
-    fn calcular_dias_mes(&self) -> i16 {
+    fn calcular_dias_mes(&self) -> u32 {
         match self.mes {
             1 | 3 | 5 | 7 | 8 | 10 | 12 => return 31,
             4 | 6 | 9 | 11 => return 30,
@@ -52,7 +52,7 @@ impl Fecha {
         self.anio % 4 == 0 && self.anio % 100 != 0
     }
 
-    fn sumar_dias(&mut self, mut dias: i16) {
+    pub fn sumar_dias(&mut self, mut dias: u32) {
         while dias > 0 {
             if self.dia + dias > self.calcular_dias_mes() {
                 dias = dias - (self.calcular_dias_mes() - self.dia) - 1;
@@ -69,7 +69,7 @@ impl Fecha {
             }
         }
     }
-    fn restar_dias(&mut self, mut dias: i16) {
+    pub fn restar_dias(&mut self, mut dias: u32) {
         while dias > 0 {
             if (self.dia - dias) < 1 {
                 if self.mes == 1 {
@@ -86,7 +86,7 @@ impl Fecha {
             }
         }
     }
-    pub fn es_mayor(&self, fecha: Fecha) -> bool {
+    pub fn es_mayor(&self, fecha: &Fecha) -> bool {
         if self.anio > fecha.anio {
             return true;
         } else if self.anio == fecha.anio {

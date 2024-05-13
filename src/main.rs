@@ -11,5 +11,5 @@ mod tp03;
 fn main() {
     // tp01::ej1::run();
     // tp02::ej06::run();
-    tp03::ej09::run();
+    tp03::ej03::run();
 }
