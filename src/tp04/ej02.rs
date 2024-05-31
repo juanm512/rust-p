@@ -98,92 +98,158 @@ pub fn personas_min_max_salario<'a>(personas: Vec<Persona<'a>>) -> (Persona, Per
 // Nota: Implemente todos los métodos y traits que considere para resolver los ejercicios.
 // Todos los ejercicios deben resolverse con iterator y closure.
 
-pub fn run() {
-    let personas = vec![
+fn create_personas() -> Vec<Persona<'static>> {
+    vec![
         Persona {
             nombre: "Juan",
-            apellido: "Pérez",
-            direccion: "Calle 1",
-            ciudad: "Ciudad 1",
-            salario: 5100.0,
+            apellido: "Perez",
+            direccion: "Calle 123",
+            ciudad: "Ciudad A",
+            salario: 3000.0,
             edad: 30,
         },
         Persona {
-            nombre: "María",
-            apellido: "González",
-            direccion: "Calle 2",
-            ciudad: "Ciudad 2",
-            salario: 6000.0,
+            nombre: "Maria",
+            apellido: "Gomez",
+            direccion: "Avenida 456",
+            ciudad: "Ciudad B",
+            salario: 4000.0,
             edad: 25,
         },
         Persona {
             nombre: "Pedro",
-            apellido: "Rodríguez",
-            direccion: "Calle 3",
-            ciudad: "Ciudad 1",
-            salario: 4000.0,
+            apellido: "Lopez",
+            direccion: "Boulevard 789",
+            ciudad: "Ciudad A",
+            salario: 5000.0,
+            edad: 35,
+        },
+        Persona {
+            nombre: "Ana",
+            apellido: "Martinez",
+            direccion: "Plaza 101",
+            ciudad: "Ciudad C",
+            salario: 2000.0,
+            edad: 28,
+        },
+    ]
+}
+
+#[test]
+fn test_listado_por_salario() {
+    let personas = create_personas();
+    let resultado = listado_por_salario(personas.clone(), 3500.0);
+
+    let mut expected = LinkedList::new();
+    expected.push_back(personas[1].clone());
+    expected.push_back(personas[2].clone());
+
+    assert_eq!(resultado, expected);
+}
+
+#[test]
+fn test_listado_por_edad_ciudad() {
+    let personas = create_personas();
+    let resultado = listado_por_edad_ciudad(personas.clone(), 28, "Ciudad A");
+
+    let mut expected = LinkedList::new();
+    expected.push_back(personas[0].clone());
+    expected.push_back(personas[2].clone());
+
+    assert_eq!(resultado, expected);
+}
+
+#[test]
+fn test_todas_personas_misma_ciudad_true() {
+    let personas = vec![
+        Persona {
+            nombre: "Juan",
+            apellido: "Perez",
+            direccion: "Calle 123",
+            ciudad: "Ciudad A",
+            salario: 3000.0,
+            edad: 30,
+        },
+        Persona {
+            nombre: "Pedro",
+            apellido: "Lopez",
+            direccion: "Boulevard 789",
+            ciudad: "Ciudad A",
+            salario: 5000.0,
             edad: 35,
         },
     ];
+    let resultado = todas_personas_misma_ciudad(personas, "Ciudad A");
+    assert!(resultado);
+}
 
-    let salario_referencia = 5000.0;
+#[test]
+fn test_todas_personas_misma_ciudad_false() {
+    let personas = create_personas();
+    let resultado = todas_personas_misma_ciudad(personas, "Ciudad A");
+    assert!(!resultado);
+}
 
-    let listado_salarios = listado_por_salario(personas.clone(), salario_referencia);
-    println!();
-    println!();
-    println!("------------------ A) -----------------");
-    for p in listado_salarios {
-        println!("{:?}", p);
-    }
+#[test]
+fn test_almenosuna_personas_en_ciudad_true() {
+    let personas = create_personas();
+    let resultado = almenosuna_personas_en_ciudad(personas, "Ciudad B");
+    assert!(resultado);
+}
 
-    let listado_edad_ciudad = listado_por_edad_ciudad(personas.clone(), 27, "Ciudad 1");
-    println!();
-    println!();
-    println!("------------------ B) -----------------");
-    for p in listado_edad_ciudad {
-        println!("{:?}", p);
-    }
+#[test]
+fn test_almenosuna_personas_en_ciudad_false() {
+    let personas = create_personas();
+    let resultado = almenosuna_personas_en_ciudad(personas, "Ciudad D");
+    assert!(!resultado);
+}
 
-    let todas_personas_misma_ciudad = todas_personas_misma_ciudad(personas.clone(), "Ciudad 1");
-    println!();
-    println!();
-    println!("------------------ C) -----------------");
-    println!("Son todos misma ciudad: {}", todas_personas_misma_ciudad);
+#[test]
+fn test_existe_persona_true() {
+    let personas = create_personas();
+    let persona = Persona {
+        nombre: "Juan",
+        apellido: "Perez",
+        direccion: "Calle 123",
+        ciudad: "Ciudad A",
+        salario: 3000.0,
+        edad: 30,
+    };
+    let resultado = existe_persona(personas, persona);
+    assert!(resultado);
+}
 
-    let almenosuna_personas_en_ciudad = almenosuna_personas_en_ciudad(personas.clone(), "Ciudad 1");
-    println!();
-    println!();
-    println!("------------------ D) -----------------");
-    println!("Hay al menos uno: {}", almenosuna_personas_en_ciudad);
+#[test]
+fn test_existe_persona_false() {
+    let personas = create_personas();
+    let persona = Persona {
+        nombre: "Luis",
+        apellido: "Garcia",
+        direccion: "Calle 999",
+        ciudad: "Ciudad X",
+        salario: 6000.0,
+        edad: 40,
+    };
+    let resultado = existe_persona(personas, persona);
+    assert!(!resultado);
+}
 
-    let existe_persona = existe_persona(
-        personas.clone(),
-        Persona {
-            nombre: "Pedro",
-            apellido: "Rodríguez",
-            direccion: "Calle 3",
-            ciudad: "Ciudad 1",
-            salario: 4000.0,
-            edad: 35,
-        },
-    );
-    println!();
-    println!();
-    println!("------------------ E) -----------------");
-    println!("Existe la persona en el vector: {}", existe_persona);
+#[test]
+fn test_arreglo_edades() {
+    let personas = create_personas();
+    let resultado = arreglo_edades(personas.clone());
+    let expected = vec![30, 25, 35, 28];
+    assert_eq!(resultado, expected);
+}
 
-    let vec_edades = arreglo_edades(personas.clone());
-    println!();
-    println!();
-    println!("------------------ F) -----------------");
-    println!("Existe la persona en el vector: {:?}", vec_edades);
+#[test]
+fn test_personas_min_max_salario() {
+    let personas = create_personas();
+    let (min_persona, max_persona) = personas_min_max_salario(personas.clone());
 
-    let personas_min_max_salario = personas_min_max_salario(personas.clone());
-    println!();
-    println!();
-    println!("------------------ G) -----------------");
-    println!(
-        "Existe la persona en el vector: {:?}",
-        personas_min_max_salario
-    );
+    let expected_min = personas[3].clone(); // Ana Martinez with 2000.0 salary
+    let expected_max = personas[2].clone(); // Pedro Lopez with 5000.0 salary
+
+    assert_eq!(min_persona, expected_min);
+    assert_eq!(max_persona, expected_max);
 }

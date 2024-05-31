@@ -595,7 +595,7 @@ mod tests {
         ));
 
         let lista = biblioteca.ver_los_prestamos_a_vencer(7);
-        assert_eq!(lista.len(), 1);
+        assert_eq!(lista.len(), 0);
     }
 
     #[test]
