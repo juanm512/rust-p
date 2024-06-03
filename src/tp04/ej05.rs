@@ -647,8 +647,8 @@ mod tests {
             blockchains: vec!["Ethereum".to_string()],
         });
 
-        plataforma.comprar_cripto(&user.email, "Wrapped Bitcoin", 500.0, 50000.0);
-        plataforma.vender_cripto(&user.email, "Wrapped Bitcoin", 0.01, 50000.0);
+        plataforma.comprar_cripto(&user.email, "Bitcoin", 500.0, 50000.0);
+        plataforma.vender_cripto(&user.email, "Bitcoin", 0.01, 50000.0);
 
         assert_eq!(plataforma.volumen_ventas().unwrap(), "Bitcoin");
     }
@@ -665,7 +665,7 @@ mod tests {
         });
         plataforma.agregar_usuario(user.clone());
 
-        plataforma.comprar_cripto(&user.email, "Wrapped Bitcoin", 500.0, 50000.0);
+        plataforma.comprar_cripto(&user.email, "Bitcoin", 500.0, 50000.0);
 
         assert_eq!(plataforma.volumen_compras().unwrap(), "Bitcoin");
     }

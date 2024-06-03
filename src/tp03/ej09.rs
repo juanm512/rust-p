@@ -249,184 +249,184 @@ impl Veterinaria {
     }
 }
 
-pub fn run() {
-    // Crear dueños
-    let duenio_1 = Duenio {
-        nombre: String::from("Alberto"),
-        direccion: String::from("Calle 48 164"),
-        telefono: String::from("221 304937"),
-    };
+// pub fn run() {
+//     // Crear dueños
+//     let duenio_1 = Duenio {
+//         nombre: String::from("Alberto"),
+//         direccion: String::from("Calle 48 164"),
+//         telefono: String::from("221 304937"),
+//     };
 
-    let duenio_2 = Duenio {
-        nombre: String::from("Maria"),
-        direccion: String::from("Avenida 10 102"),
-        telefono: String::from("222 587439"),
-    };
+//     let duenio_2 = Duenio {
+//         nombre: String::from("Maria"),
+//         direccion: String::from("Avenida 10 102"),
+//         telefono: String::from("222 587439"),
+//     };
 
-    let duenio_3 = Duenio {
-        nombre: String::from("Pedro"),
-        direccion: String::from("Calle 32 75"),
-        telefono: String::from("223 901234"),
-    };
+//     let duenio_3 = Duenio {
+//         nombre: String::from("Pedro"),
+//         direccion: String::from("Calle 32 75"),
+//         telefono: String::from("223 901234"),
+//     };
 
-    let duenio_4 = Duenio {
-        nombre: String::from("Luisa"),
-        direccion: String::from("Avenida 5 301"),
-        telefono: String::from("224 675821"),
-    };
+//     let duenio_4 = Duenio {
+//         nombre: String::from("Luisa"),
+//         direccion: String::from("Avenida 5 301"),
+//         telefono: String::from("224 675821"),
+//     };
 
-    // Crear mascotas
-    let mascota_1 = Mascota {
-        nombre: String::from("Rex"),
-        edad: 5,
-        tipo: EspecieAnimal::PERRO,
-        duenio: duenio_1.clone(),
-    };
+//     // Crear mascotas
+//     let mascota_1 = Mascota {
+//         nombre: String::from("Rex"),
+//         edad: 5,
+//         tipo: EspecieAnimal::PERRO,
+//         duenio: duenio_1.clone(),
+//     };
 
-    let mascota_2 = Mascota {
-        nombre: String::from("Mishi"),
-        edad: 3,
-        tipo: EspecieAnimal::GATO,
-        duenio: duenio_2.clone(),
-    };
+//     let mascota_2 = Mascota {
+//         nombre: String::from("Mishi"),
+//         edad: 3,
+//         tipo: EspecieAnimal::GATO,
+//         duenio: duenio_2.clone(),
+//     };
 
-    let mascota_3 = Mascota {
-        nombre: String::from("Firulais"),
-        edad: 2,
-        tipo: EspecieAnimal::PERRO,
-        duenio: duenio_3.clone(),
-    };
+//     let mascota_3 = Mascota {
+//         nombre: String::from("Firulais"),
+//         edad: 2,
+//         tipo: EspecieAnimal::PERRO,
+//         duenio: duenio_3.clone(),
+//     };
 
-    let mascota_4 = Mascota {
-        nombre: String::from("Garibaldi"),
-        edad: 1,
-        tipo: EspecieAnimal::CABALLO,
-        duenio: duenio_4.clone(),
-    };
+//     let mascota_4 = Mascota {
+//         nombre: String::from("Garibaldi"),
+//         edad: 1,
+//         tipo: EspecieAnimal::CABALLO,
+//         duenio: duenio_4.clone(),
+//     };
 
-    let mascota_5 = Mascota {
-        nombre: String::from("Nemo"),
-        edad: 4,
-        tipo: EspecieAnimal::OTROS,
-        duenio: duenio_1.clone(),
-    };
+//     let mascota_5 = Mascota {
+//         nombre: String::from("Nemo"),
+//         edad: 4,
+//         tipo: EspecieAnimal::OTROS,
+//         duenio: duenio_1.clone(),
+//     };
 
-    // Crear veterinaria
-    let mut veterinaria = Veterinaria::new(
-        String::from("Clínica Veterinaria XYZ"),
-        String::from("Calle Principal 123"),
-        String::from("12345"),
-        VecDeque::new(), // La cola de atención comienza vacía
-        Vec::new(),      // El registro de atenciones comienza vacío
-    );
+//     // Crear veterinaria
+//     let mut veterinaria = Veterinaria::new(
+//         String::from("Clínica Veterinaria XYZ"),
+//         String::from("Calle Principal 123"),
+//         String::from("12345"),
+//         VecDeque::new(), // La cola de atención comienza vacía
+//         Vec::new(),      // El registro de atenciones comienza vacío
+//     );
 
-    // Agregar mascotas a la cola de atención de la veterinaria
-    veterinaria.agregar_mascota_atras_cola(mascota_1.clone());
-    veterinaria.agregar_mascota_atras_cola(mascota_2.clone());
-    veterinaria.agregar_mascota_atras_cola(mascota_3.clone());
-    veterinaria.agregar_mascota_atras_cola(mascota_4.clone());
-    veterinaria.agregar_mascota_adelante_cola(mascota_5.clone());
+//     // Agregar mascotas a la cola de atención de la veterinaria
+//     veterinaria.agregar_mascota_atras_cola(mascota_1.clone());
+//     veterinaria.agregar_mascota_atras_cola(mascota_2.clone());
+//     veterinaria.agregar_mascota_atras_cola(mascota_3.clone());
+//     veterinaria.agregar_mascota_atras_cola(mascota_4.clone());
+//     veterinaria.agregar_mascota_adelante_cola(mascota_5.clone());
 
-    // Eliminar una mascota específica de la cola de atención
-    veterinaria.eliminar_mascota_cola(&mascota_4);
+//     // Eliminar una mascota específica de la cola de atención
+//     veterinaria.eliminar_mascota_cola(&mascota_4);
 
-    // Atender la próxima mascota de la cola
-    let mascota_atendida = veterinaria.atender_proxima_mascota();
-    if let Some(mascota) = mascota_atendida {
-        println!("Se atendió a la mascota: {}", mascota.nombre);
+//     // Atender la próxima mascota de la cola
+//     let mascota_atendida = veterinaria.atender_proxima_mascota();
+//     if let Some(mascota) = mascota_atendida {
+//         println!("Se atendió a la mascota: {}", mascota.nombre);
 
-        // Registrar una atención
-        let atencion_registrada = Atencion {
-            mascota: mascota.clone(),
-            diagnostico: String::from("Resfriado"),
-            tratamiento: String::from("Antibióticos"),
-            fecha_proxima_visita: Some(Fecha::new(13, 5, 2024)),
-        };
-        veterinaria.registrar_atencion(atencion_registrada);
-    }
+//         // Registrar una atención
+//         let atencion_registrada = Atencion {
+//             mascota: mascota.clone(),
+//             diagnostico: String::from("Resfriado"),
+//             tratamiento: String::from("Antibióticos"),
+//             fecha_proxima_visita: Some(Fecha::new(13, 5, 2024)),
+//         };
+//         veterinaria.registrar_atencion(atencion_registrada);
+//     }
 
-    // Atender la próxima mascota de la cola
-    let mascota_atendida = veterinaria.atender_proxima_mascota();
-    if let Some(mascota) = mascota_atendida {
-        println!("Se atendió a la mascota: {}", mascota.nombre);
+//     // Atender la próxima mascota de la cola
+//     let mascota_atendida = veterinaria.atender_proxima_mascota();
+//     if let Some(mascota) = mascota_atendida {
+//         println!("Se atendió a la mascota: {}", mascota.nombre);
 
-        // Registrar una atención
-        let atencion_registrada = Atencion {
-            mascota: mascota.clone(),
-            diagnostico: String::from("Resfriado"),
-            tratamiento: String::from("Antibióticos"),
-            fecha_proxima_visita: Some(Fecha::new(13, 5, 2024)),
-        };
-        veterinaria.registrar_atencion(atencion_registrada);
-    }
+//         // Registrar una atención
+//         let atencion_registrada = Atencion {
+//             mascota: mascota.clone(),
+//             diagnostico: String::from("Resfriado"),
+//             tratamiento: String::from("Antibióticos"),
+//             fecha_proxima_visita: Some(Fecha::new(13, 5, 2024)),
+//         };
+//         veterinaria.registrar_atencion(atencion_registrada);
+//     }
 
-    // Buscar una atención
-    if let Some(atencion_buscada) = veterinaria.buscar_atencion(
-        mascota_5.nombre.clone(),
-        mascota_5.duenio.nombre.clone(),
-        mascota_5.duenio.telefono.clone(),
-    ) {
-        println!(
-            "Se encontró la atención de la mascota {}:",
-            mascota_5.nombre
-        );
-        println!("Diagnóstico: {}", atencion_buscada.diagnostico);
-        println!("Tratamiento: {}", atencion_buscada.tratamiento);
-        if let Some(fecha_prox_v) = &atencion_buscada.fecha_proxima_visita {
-            println!("Fecha próxima visita: {:#?}", fecha_prox_v);
-        } else {
-            println!("No hay fecha próxima visita registrada.");
-        }
+//     // Buscar una atención
+//     if let Some(atencion_buscada) = veterinaria.buscar_atencion(
+//         mascota_5.nombre.clone(),
+//         mascota_5.duenio.nombre.clone(),
+//         mascota_5.duenio.telefono.clone(),
+//     ) {
+//         println!(
+//             "Se encontró la atención de la mascota {}:",
+//             mascota_5.nombre
+//         );
+//         println!("Diagnóstico: {}", atencion_buscada.diagnostico);
+//         println!("Tratamiento: {}", atencion_buscada.tratamiento);
+//         if let Some(fecha_prox_v) = &atencion_buscada.fecha_proxima_visita {
+//             println!("Fecha próxima visita: {:#?}", fecha_prox_v);
+//         } else {
+//             println!("No hay fecha próxima visita registrada.");
+//         }
 
-        veterinaria.modificar_fecha_atencion(
-            &Atencion {
-                mascota: mascota_5.clone(),
-                diagnostico: String::from("Resfriado"),
-                tratamiento: String::from("Antibióticos"),
-                fecha_proxima_visita: None,
-            },
-            Some(Fecha::new(20, 6, 2024)),
-        );
-    } else {
-        println!(
-            "No se encontró ninguna atención para la mascota {}.",
-            mascota_5.nombre
-        );
-    }
+//         veterinaria.modificar_fecha_atencion(
+//             &Atencion {
+//                 mascota: mascota_5.clone(),
+//                 diagnostico: String::from("Resfriado"),
+//                 tratamiento: String::from("Antibióticos"),
+//                 fecha_proxima_visita: None,
+//             },
+//             Some(Fecha::new(20, 6, 2024)),
+//         );
+//     } else {
+//         println!(
+//             "No se encontró ninguna atención para la mascota {}.",
+//             mascota_5.nombre
+//         );
+//     }
 
-    // Buscar una atención
-    if let Some(atencion_buscada) = veterinaria.buscar_atencion(
-        mascota_5.nombre.clone(),
-        mascota_5.duenio.nombre.clone(),
-        mascota_5.duenio.telefono.clone(),
-    ) {
-        println!(
-            "Se encontró la atención de la mascota {}:",
-            mascota_5.nombre
-        );
-        println!("Diagnóstico: {}", atencion_buscada.diagnostico);
-        println!("Tratamiento: {}", atencion_buscada.tratamiento);
-        if let Some(fecha_prox_v) = &atencion_buscada.fecha_proxima_visita {
-            println!("Fecha próxima visita: {:#?}", fecha_prox_v);
-        } else {
-            println!("No hay fecha próxima visita registrada.");
-        }
-        // Eliminar una atención
-        veterinaria.eliminar_atencion(&Atencion {
-            mascota: mascota_5.clone(),
-            diagnostico: String::from("Resfriado"),
-            tratamiento: String::from("Antibióticos"),
-            fecha_proxima_visita: None,
-        });
-    } else {
-        println!(
-            "No se encontró ninguna atención para la mascota {}.",
-            mascota_5.nombre
-        );
-    }
+//     // Buscar una atención
+//     if let Some(atencion_buscada) = veterinaria.buscar_atencion(
+//         mascota_5.nombre.clone(),
+//         mascota_5.duenio.nombre.clone(),
+//         mascota_5.duenio.telefono.clone(),
+//     ) {
+//         println!(
+//             "Se encontró la atención de la mascota {}:",
+//             mascota_5.nombre
+//         );
+//         println!("Diagnóstico: {}", atencion_buscada.diagnostico);
+//         println!("Tratamiento: {}", atencion_buscada.tratamiento);
+//         if let Some(fecha_prox_v) = &atencion_buscada.fecha_proxima_visita {
+//             println!("Fecha próxima visita: {:#?}", fecha_prox_v);
+//         } else {
+//             println!("No hay fecha próxima visita registrada.");
+//         }
+//         // Eliminar una atención
+//         veterinaria.eliminar_atencion(&Atencion {
+//             mascota: mascota_5.clone(),
+//             diagnostico: String::from("Resfriado"),
+//             tratamiento: String::from("Antibióticos"),
+//             fecha_proxima_visita: None,
+//         });
+//     } else {
+//         println!(
+//             "No se encontró ninguna atención para la mascota {}.",
+//             mascota_5.nombre
+//         );
+//     }
 
-    println!("{:#?}", veterinaria);
-}
+//     println!("{:#?}", veterinaria);
+// }
 
 mod tests {
     use super::*;

@@ -103,7 +103,7 @@ impl Auto {
         }
 
         if self.año < 2000 {
-            precio_total -= self.precio_bruto * 0.5
+            precio_total -= self.precio_bruto * 0.05
         }
 
         precio_total
@@ -156,64 +156,6 @@ impl ConcesionarioAuto {
     }
 }
 
-pub fn run() {
-    // Crear algunos autos de ejemplo
-    let auto1 = Auto::new(
-        String::from("Toyota"),
-        String::from("Corolla"),
-        2018,
-        20000.0,
-        Color::AZUL,
-    );
-    let auto2 = Auto::new(
-        String::from("BMW"),
-        String::from("X5"),
-        2020,
-        50000.0,
-        Color::NEGRO,
-    );
-    let auto3 = Auto::new(
-        String::from("Ford"),
-        String::from("Fiesta"),
-        2010,
-        10000.0,
-        Color::BLANCO,
-    );
-
-    // Crear un concesionario
-    let mut concesionario = ConcesionarioAuto::new(
-        String::from("Concesionario XYZ"),
-        String::from("Calle Principal"),
-        3,
-    );
-
-    // Agregar autos al concesionario
-    concesionario.agregar_auto(auto1);
-    concesionario.agregar_auto(auto2);
-    concesionario.agregar_auto(auto3);
-
-    // Crear un auto para buscar
-    let auto_buscado = Auto::new(
-        String::from("BMW"),
-        String::from("X5"),
-        2020,
-        50000.0,
-        Color::NEGRO,
-    );
-
-    // Buscar el auto
-    match concesionario.buscar_auto(&auto_buscado) {
-        Some(auto_encontrado) => println!("Auto encontrado: {:#?} ", auto_encontrado),
-        None => println!("Auto no encontrado"),
-    }
-    // eliminar y buscar el auto
-    concesionario.eliminar_auto(&auto_buscado);
-    match concesionario.buscar_auto(&auto_buscado) {
-        Some(auto_encontrado) => println!("Auto encontrado: {:#?} ", auto_encontrado),
-        None => println!("Auto no encontrado"),
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -259,6 +201,35 @@ mod tests {
     }
 
     #[test]
+    fn test_auto_calcular_precio() {
+        let auto1 = Auto::new(
+            String::from("Toyota"),
+            String::from("Corolla"),
+            2018,
+            20_000.0,
+            Color::ROJO,
+        );
+        let auto2 = Auto::new(
+            String::from("VW"),
+            String::from("Gol"),
+            1998,
+            8_000.0,
+            Color::AMARILLO,
+        );
+        let auto3 = Auto::new(
+            String::from("BMW"),
+            String::from("M50"),
+            2015,
+            15_000.0,
+            Color::VERDE,
+        );
+
+        assert_eq!(auto1.calcular_precio(), 25000.0);
+        assert_eq!(auto2.calcular_precio(), 9600.0);
+        assert_eq!(auto3.calcular_precio(), 15750.0);
+    }
+
+    #[test]
     fn test_concesionario_agregar_auto() {
         let mut concesionario = ConcesionarioAuto::new(
             String::from("Concesionario XYZ"),
@@ -288,9 +259,9 @@ mod tests {
             Color::BLANCO,
         );
 
-        assert_eq!(concesionario.agregar_auto(auto1), true);
-        assert_eq!(concesionario.agregar_auto(auto2), true);
-        assert_eq!(concesionario.agregar_auto(auto3), false);
+        assert_eq!(concesionario.agregar_auto(auto1.clone()), true);
+        assert_eq!(concesionario.agregar_auto(auto2.clone()), true);
+        assert_eq!(concesionario.agregar_auto(auto3.clone()), false);
     }
 
     #[test]
@@ -317,7 +288,7 @@ mod tests {
         );
 
         concesionario.agregar_auto(auto1.clone());
-        concesionario.agregar_auto(auto2);
+        concesionario.agregar_auto(auto2.clone());
 
         assert_eq!(concesionario.autos.len(), 2);
 
@@ -332,9 +303,8 @@ mod tests {
         let mut concesionario = ConcesionarioAuto::new(
             String::from("Concesionario XYZ"),
             String::from("Calle Principal"),
-            2,
+            6,
         );
-
         let auto1 = Auto::new(
             String::from("Toyota"),
             String::from("Corolla"),
@@ -346,12 +316,44 @@ mod tests {
             String::from("BMW"),
             String::from("X5"),
             2020,
-            50000.0,
+            34000.0,
             Color::NEGRO,
         );
+        let auto3 = Auto::new(
+            String::from("12DSA"),
+            String::from("ASD"),
+            2000,
+            50000.0,
+            Color::VERDE,
+        );
+        let auto4 = Auto::new(
+            String::from("QWE"),
+            String::from("L P2"),
+            2010,
+            52000.0,
+            Color::AMARILLO,
+        );
+        let auto5 = Auto::new(
+            String::from("NUFDASI"),
+            String::from("DSA"),
+            2002,
+            26400.0,
+            Color::BLANCO,
+        );
+        let auto6 = Auto::new(
+            String::from("4THVC"),
+            String::from("DA"),
+            1984,
+            20000.0,
+            Color::ROJO,
+        );
 
+        concesionario.agregar_auto(auto3.clone());
+        concesionario.agregar_auto(auto5.clone());
+        concesionario.agregar_auto(auto4.clone());
+        concesionario.agregar_auto(auto6.clone());
         concesionario.agregar_auto(auto1.clone());
-        concesionario.agregar_auto(auto2);
+        concesionario.agregar_auto(auto2.clone());
 
         if let Some(auto_encontrado) = concesionario.buscar_auto(&auto1) {
             assert!(auto_encontrado.equals(&auto1));

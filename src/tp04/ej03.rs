@@ -297,7 +297,6 @@ impl StreamingRust {
 //
 //
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -484,7 +483,6 @@ mod tests {
     #[test]
     fn test_susc_mas_usada_activas() {
         let mut plataforma = create_test_data();
-        plataforma.cancelar_suscripcion(2);
         plataforma.cancelar_suscripcion(1);
         let suscripcion_mas_usada = plataforma.susc_mas_usada_activas();
 
